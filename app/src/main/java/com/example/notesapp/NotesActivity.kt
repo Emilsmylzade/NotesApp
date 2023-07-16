@@ -1,5 +1,6 @@
 package com.example.notesapp
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -54,6 +55,12 @@ class NotesActivity : AppCompatActivity() {
             updateNote()
         }
 
+        binding?.ivDots?.setOnClickListener{
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dots_dialog)
+
+            dialog.show()
+        }
         // Retrieve the noteId from the intent extras
         noteId = intent.getLongExtra("noteId", -1)
 
