@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.notesapp.databinding.ActivityNotesBinding
@@ -58,6 +59,13 @@ class NotesActivity : AppCompatActivity() {
         binding?.ivDots?.setOnClickListener{
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dots_dialog)
+
+            val refreshButton = dialog.findViewById<LinearLayout>(R.id.first_row)
+            refreshButton.setOnClickListener{
+                binding?.etTitle?.setText("")
+                binding?.etContent?.setText("")
+                dialog.dismiss()
+            }
 
             dialog.show()
         }
