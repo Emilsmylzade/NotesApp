@@ -11,7 +11,7 @@ My Notes App is a basic notes app that is written in Android Studio Kotlin. It u
 
 2. **Notes Activity** - This activity displays a note with its title and content. It includes a toolbar for additional options.
 
-   ![Notes Activity](notesApp2.png)
+   ![Notes Activity](NotesApp2.png)
 
 3. **Options Dialog** - The dialog that opens when the three dots in the toolbar of the Notes Activity are clicked. It provides three buttons for resetting, sharing, and deleting the note.
 
