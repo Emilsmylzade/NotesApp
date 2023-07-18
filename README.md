@@ -1,7 +1,7 @@
 # My Notes App
 
 My Notes App is a basic notes app that is written in Android Studio Kotlin. It utilizes Room Database to store the notes in this app.
- After the first time using databases in my workout app, I felt like I did not completely understand how the program interacts with the database. So, I started to build this app, which is mostly depended on database. And I can happily say that, I compeletely understood not just how to store the data in the database, but also how to take the data from database effectively. 
+ After the first time using databases in my workout app, I felt like I did not completely understand how the program interacts with the database. So, I started to build this app, which is mostly dependent on the database. And I can happily say that I completely understood not just how to store the data in the database, but also how to take the data from the database effectively after building this app. 
 
 ## Screenshots
 
