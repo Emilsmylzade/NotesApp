@@ -57,15 +57,16 @@ class MainActivity : AppCompatActivity() {
                 if (childView != null && gestureDetector.onTouchEvent(e)) {
                     val position = rv.getChildAdapterPosition(childView)
                     val selectedNote = notesAdapter.getItemAtPosition(position)
+                    //here
+                    val intent = Intent(this@MainActivity, NotesActivity::class.java)
+                    intent.putExtra("noteId", selectedNote.id) // Pass the noteId to the NotesActivity
+                    startActivity(intent)
                     noteDao.getAllNotes().observe(this@MainActivity) { notes ->
                         notes?.let {
                             notesAdapter.updateANote(selectedNote)
                         }
                         notesAdapter.notifyDataSetChanged()
                     }
-                    val intent = Intent(this@MainActivity, NotesActivity::class.java)
-                    intent.putExtra("noteId", selectedNote.id) // Pass the noteId to the NotesActivity
-                    startActivity(intent)
                     return true
                 }
                 return false
@@ -97,13 +98,14 @@ class MainActivity : AppCompatActivity() {
                 val insertedNoteId = noteDao.insert(newNote) // Retrieve the ID of the inserted note
                 val updatedNotesList = noteDao.getAllNotes().value // Get the updated list of notes
                 withContext(Dispatchers.Main) {
+                    val intent = Intent(this@MainActivity, NotesActivity::class.java)
+                    intent.putExtra("noteId", insertedNoteId) // Pass the ID of the inserted note
+                    startActivity(intent)
                     updatedNotesList?.let {
                         notesAdapter.updateData(it) // Update the adapter with the new data
                     }
                     notesAdapter.notifyDataSetChanged()
-                    val intent = Intent(this@MainActivity, NotesActivity::class.java)
-                    intent.putExtra("noteId", insertedNoteId) // Pass the ID of the inserted note
-                    startActivity(intent)
+
                 }
             }
         }

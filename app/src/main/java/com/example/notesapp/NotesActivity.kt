@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
+import android.view.Window
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -52,30 +55,66 @@ class NotesActivity : AppCompatActivity() {
                 }
             }
         })
+
         binding?.ivBack?.setOnClickListener {
             updateNote()
         }
 
         binding?.ivDots?.setOnClickListener{
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.dots_dialog)
-
-            val refreshButton = dialog.findViewById<LinearLayout>(R.id.first_row)
-            refreshButton.setOnClickListener{
-                binding?.etTitle?.setText("")
-                binding?.etContent?.setText("")
-                dialog.dismiss()
-            }
-
-            dialog.show()
+            handlingDialog()
         }
         // Retrieve the noteId from the intent extras
         noteId = intent.getLongExtra("noteId", -1)
 
         // Load the note details
         loadNoteDetails()
+    }
 
 
+    private fun handlingDialog(){
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dots_dialog)
+
+        // Calculate dialog position
+        val window: Window? = dialog.window
+        window?.apply {
+            setGravity(Gravity.TOP or Gravity.END) // Position at the top-right corner
+            attributes.width = WindowManager.LayoutParams.WRAP_CONTENT
+            attributes.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+            // Set margins to adjust position if needed
+            val topMargin = 200
+            val endMargin = 20
+            attributes.x = endMargin
+            attributes.y = topMargin
+
+            setBackgroundDrawableResource(R.drawable.dialog_corners)
+        }
+        val refreshButton = dialog.findViewById<LinearLayout>(R.id.first_row)
+        refreshButton.setOnClickListener{
+            binding?.etTitle?.setText("")
+            binding?.etContent?.setText("")
+            dialog.dismiss()
+        }
+
+        val deleteButton = dialog.findViewById<LinearLayout>(R.id.third_row)
+        deleteButton.setOnClickListener{
+            deleteNote()
+            dialog.dismiss()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        dialog.show()
+    }
+    private fun deleteNote() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val note = noteDao.getNoteById(noteId)
+                withContext(Dispatchers.Main) {
+                    noteDao.delete(note!!)
+                }
+            }
+        }
     }
 
     private fun loadNoteDetails() {
@@ -91,6 +130,7 @@ class NotesActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun updateNote() {
         val title = binding?.etTitle?.text.toString()
